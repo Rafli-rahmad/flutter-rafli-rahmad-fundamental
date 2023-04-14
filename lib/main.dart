@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
       ),
       home: const MyHomePage(title: 'Calculator'),
     );
@@ -30,8 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
+  const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
@@ -39,23 +38,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var FirstField = TextEditingController();
-  var SecondField = TextEditingController();
+  double result = 0;
+  var firstfield = TextEditingController();
+  var secondfield = TextEditingController();
+  var fieldKey = GlobalKey<FormState>();
 
   void add() {
-    setState(() {});
+    setState(() {
+      result = double.parse(firstfield.text) + double.parse(secondfield.text);
+    });
   }
 
   void substract() {
-    setState(() {});
+    setState(() {
+      result = double.parse(firstfield.text) - double.parse(secondfield.text);
+    });
   }
 
   void multiply() {
-    setState(() {});
+    setState(() {
+      result = double.parse(firstfield.text) * double.parse(secondfield.text);
+    });
   }
 
   void divide() {
-    setState(() {});
+    setState(() {
+      result = double.parse(firstfield.text) / double.parse(secondfield.text);
+    });
   }
 
   @override
@@ -65,35 +74,31 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          children: [
-            Text("Result = ", style: const TextStyle(fontSize: 30)),
-            textField(FirstField, "Enter First Number"),
-            textField(SecondField, "Enter Second Number"),
-            button(add, "Add"),
-            button(substract, "Substract"),
-            button(multiply, "Multiply"),
-            button(divide, "Divide"),
-          ],
+        child: Form(
+          key: fieldKey,
+          child: Column(
+            children: [
+              Text("Result = $result", style: const TextStyle(fontSize: 30)),
+              textField(firstfield, "Enter First Number"),
+              textField(secondfield, "Enter Second Number"),
+              button(add, "Add"),
+              button(substract, "Substract"),
+              button(multiply, "Multiply"),
+              button(divide, "Divide"),
+            ],
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
-@override
 Widget textField(TextEditingController controller, String labelText) {
   return Container(
     margin: const EdgeInsets.all(10),
     padding: const EdgeInsets.all(10),
     child: TextFormField(
       controller: controller,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Mohon Masukkan Angka';
-        }
-        return null;
-      },
       decoration: InputDecoration(
         labelText: labelText,
       ),
